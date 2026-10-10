@@ -19,66 +19,60 @@
 
         .container {
             text-align: center;
-            padding: 40px 30px;
+            padding: 30px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
             border-radius: 32px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 480px;
+            max-width: 720px;
             width: 100%;
         }
 
         .title {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .subtitle {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 32px;
+            margin-bottom: 24px;
             font-weight: 300;
         }
 
-        .btn {
-            padding: 18px 64px;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #fff;
-            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            box-shadow: 0 8px 32px rgba(245, 87, 108, 0.4);
-            transition: all 0.3s ease;
+        .player-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 */
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            background: #000;
         }
 
-        .btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 14px 40px rgba(245, 87, 108, 0.55);
+        .player-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
-        .btn:active { transform: translateY(-1px) scale(0.99); }
+        .hint {
+            margin-top: 16px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.5;
+        }
 
         .qr-section {
-            margin-top: 36px;
-            padding-top: 28px;
+            margin-top: 24px;
+            padding-top: 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .qr-label {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.75);
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            font-weight: 500;
         }
 
         #qrcode {
@@ -86,23 +80,17 @@
             justify-content: center;
             align-items: center;
             background: #fff;
-            padding: 18px;
-            border-radius: 20px;
+            padding: 14px;
+            border-radius: 18px;
             width: fit-content;
-            margin: 0 auto;
+            margin: 12px auto 0;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         #qrcode img, #qrcode canvas {
             display: block;
-            width: 240px !important;
-            height: 240px !important;
-        }
-
-        .hint {
-            margin-top: 16px;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
+            width: 180px !important;
+            height: 180px !important;
         }
     </style>
 </head>
@@ -111,33 +99,35 @@
         <div class="title">Элементарно</div>
         <div class="subtitle">Мультфильм · Начало с 57:03</div>
 
-        <button class="btn" onclick="openVideo()">Нажми</button>
+        <!-- Встроенный плеер VK -->
+        <div class="player-wrap">
+            <iframe
+                id="vkPlayer"
+                src="https://vk.com/video_ext.php?oid=-220018529&id=456248228&t=3423s&autoplay=1&hd=2"
+                allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <div class="hint">
+            Если видео не запустилось само — просто нажмите ▶ в плеере.
+            <br>Браузеры блокируют автозапуск со звуком из соображений безопасности.
+        </div>
 
         <div class="qr-section">
-            <div class="qr-label">Или отсканируйте QR-код</div>
+            <div style="font-size:0.85rem;color:rgba(255,255,255,0.75);letter-spacing:0.5px;text-transform:uppercase;">QR на этот сайт</div>
             <div id="qrcode"></div>
-            <div class="hint">QR ведёт на этот сайт</div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
     <script>
-        // Ссылка на видео с 57:03 (3423 секунды)
-        const videoUrl = 'https://vkvideo.ru/video-220018529_456248228?t=3423s';
-
-        // Ссылка на ваш сайт (для QR-кода)
         const siteUrl = 'https://aleksey090603.github.io/oyyoyo/';
 
-        function openVideo() {
-            window.open(videoUrl, '_blank');
-        }
-
-        // QR-код ведёт на этот сайт
         new QRCode(document.getElementById("qrcode"), {
             text: siteUrl,
-            width: 240,
-            height: 240,
+            width: 180,
+            height: 180,
             colorDark: "#1a1a2e",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.M
