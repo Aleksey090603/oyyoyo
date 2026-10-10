@@ -25,7 +25,7 @@
             border-radius: 32px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 520px;
+            max-width: 480px;
             width: 100%;
         }
 
@@ -44,58 +44,31 @@
             font-weight: 300;
         }
 
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            align-items: center;
-        }
-
         .btn {
-            width: 100%;
-            max-width: 320px;
-            padding: 16px 32px;
-            font-size: 1.05rem;
+            padding: 18px 64px;
+            font-size: 1.3rem;
             font-weight: 600;
             color: #fff;
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            box-shadow: 0 8px 32px rgba(245, 87, 108, 0.4);
             transition: all 0.3s ease;
         }
 
-        .btn-app {
-            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
-            box-shadow: 0 8px 32px rgba(79, 172, 254, 0.4);
-        }
-
-        .btn-time {
-            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
-            box-shadow: 0 8px 32px rgba(245, 87, 108, 0.4);
-        }
-
         .btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            filter: brightness(1.1);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 14px 40px rgba(245, 87, 108, 0.55);
         }
 
         .btn:active { transform: translateY(-1px) scale(0.99); }
 
-        .btn small {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 400;
-            text-transform: none;
-            letter-spacing: 0;
-            opacity: 0.85;
-            margin-top: 4px;
-        }
-
         .qr-section {
-            margin-top: 32px;
-            padding-top: 24px;
+            margin-top: 36px;
+            padding-top: 28px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -130,25 +103,15 @@
             margin-top: 16px;
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.6);
-            line-height: 1.5;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="title">Элементарно</div>
-        <div class="subtitle">Мультфильм</div>
+        <div class="subtitle">Мультфильм · Начало с 57:03</div>
 
-        <div class="buttons">
-            <button class="btn btn-app" onclick="openInApp()">
-                Смотреть в приложении
-                <small>откроется с начала</small>
-            </button>
-            <button class="btn btn-time" onclick="openInBrowser()">
-                Смотреть с 57:03
-                <small>откроется в браузере</small>
-            </button>
-        </div>
+        <button class="btn" onclick="openVideo()">Нажми</button>
 
         <div class="qr-section">
             <div class="qr-label">Или отсканируйте QR-код</div>
@@ -160,35 +123,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <script>
-        // Ссылки
-        const videoUrlTime = 'https://vkvideo.ru/video-220018529_456248228?t=3423s';
-        const appScheme = 'vkvideo://video-220018529_456248228';
+        // Ссылка на видео с 57:03 (3423 секунды)
+        const videoUrl = 'https://vkvideo.ru/video-220018529_456248228?t=3423s';
+
+        // Ссылка на ваш сайт (для QR-кода)
         const siteUrl = 'https://aleksey090603.github.io/oyyoyo/';
 
-        // Кнопка 1: открыть приложение VK (видео с начала)
-        function openInApp() {
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-            if (!isMobile) {
-                // На компьютере приложение не откроется — открываем сайт VK
-                window.open(videoUrlTime, '_blank');
-                return;
-            }
-
-            const now = Date.now();
-            window.location.href = appScheme;
-
-            // Если приложение не открылось за 1.5 сек — открываем браузер
-            setTimeout(function() {
-                if (Date.now() - now < 2000) {
-                    window.location.href = videoUrlTime;
-                }
-            }, 1200);
-        }
-
-        // Кнопка 2: открыть браузер с 57:03
-        function openInBrowser() {
-            window.open(videoUrlTime, '_blank');
+        function openVideo() {
+            window.open(videoUrl, '_blank');
         }
 
         // QR-код ведёт на этот сайт
