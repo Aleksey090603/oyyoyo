@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Элементарно — Смотреть</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             min-height: 100vh;
@@ -18,109 +14,192 @@
             align-items: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 20px;
         }
 
         .container {
             text-align: center;
-            padding: 40px;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 520px;
+            width: 100%;
         }
 
         .title {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 12px;
+            color: #fff;
+            margin-bottom: 8px;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            letter-spacing: 1px;
         }
 
         .subtitle {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 48px;
+            margin-bottom: 32px;
             font-weight: 300;
-            letter-spacing: 0.5px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: center;
         }
 
         .btn {
-            display: inline-block;
-            padding: 18px 64px;
-            font-size: 1.3rem;
+            width: 100%;
+            max-width: 320px;
+            padding: 16px 32px;
+            font-size: 1.05rem;
             font-weight: 600;
-            color: #ffffff;
-            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: #fff;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            text-decoration: none;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .btn-app {
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            box-shadow: 0 8px 32px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-time {
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
             box-shadow: 0 8px 32px rgba(245, 87, 108, 0.4);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
         }
 
         .btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 14px 40px rgba(245, 87, 108, 0.55);
+            transform: translateY(-3px) scale(1.02);
+            filter: brightness(1.1);
         }
 
-        .btn:active {
-            transform: translateY(-1px) scale(0.99);
-            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+        .btn:active { transform: translateY(-1px) scale(0.99); }
+
+        .btn small {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .qr-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .qr-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            padding: 18px;
+            border-radius: 20px;
+            width: fit-content;
+            margin: 0 auto;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        #qrcode img, #qrcode canvas {
+            display: block;
+            width: 240px !important;
+            height: 240px !important;
         }
 
         .hint {
-            margin-top: 24px;
-            font-size: 0.85rem;
+            margin-top: 16px;
+            font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.6);
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="title">Элементарно</div>
-        <div class="subtitle">Мультфильм · Начало с 57:03</div>
+        <div class="subtitle">Мультфильм</div>
 
-        <button class="btn" onclick="openVideo()">Нажми</button>
+        <div class="buttons">
+            <button class="btn btn-app" onclick="openInApp()">
+                Смотреть в приложении
+                <small>откроется с начала</small>
+            </button>
+            <button class="btn btn-time" onclick="openInBrowser()">
+                Смотреть с 57:03
+                <small>откроется в браузере</small>
+            </button>
+        </div>
 
-        <div class="hint">Откроется в новой вкладке</div>
+        <div class="qr-section">
+            <div class="qr-label">Или отсканируйте QR-код</div>
+            <div id="qrcode"></div>
+            <div class="hint">QR ведёт на этот сайт</div>
+        </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <script>
-       function openVideo() {
-    var videoUrl = 'https://vkvideo.ru/video-220018529_456248228?t=3423s';
-    
-    // Схема для приложения VK (работает в большинстве случаев)
-    var appScheme = 'vk://video-220018529_456248228';
-    
-    // Пробуем открыть приложение
-    var now = Date.now();
-    window.location.href = appScheme;
-    
-    // Если приложение не открылось за 1 секунду — открываем браузер
-    setTimeout(function() {
-        if (Date.now() - now < 1500) {
-            window.open(videoUrl, '_blank');
+        // Ссылки
+        const videoUrlTime = 'https://vkvideo.ru/video-220018529_456248228?t=3423s';
+        const appScheme = 'vkvideo://video-220018529_456248228';
+        const siteUrl = 'https://aleksey090603.github.io/oyyoyo/';
+
+        // Кнопка 1: открыть приложение VK (видео с начала)
+        function openInApp() {
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+            if (!isMobile) {
+                // На компьютере приложение не откроется — открываем сайт VK
+                window.open(videoUrlTime, '_blank');
+                return;
+            }
+
+            const now = Date.now();
+            window.location.href = appScheme;
+
+            // Если приложение не открылось за 1.5 сек — открываем браузер
+            setTimeout(function() {
+                if (Date.now() - now < 2000) {
+                    window.location.href = videoUrlTime;
+                }
+            }, 1200);
         }
-    }, 1000);
-}
+
+        // Кнопка 2: открыть браузер с 57:03
+        function openInBrowser() {
+            window.open(videoUrlTime, '_blank');
+        }
+
+        // QR-код ведёт на этот сайт
+        new QRCode(document.getElementById("qrcode"), {
+            text: siteUrl,
+            width: 240,
+            height: 240,
+            colorDark: "#1a1a2e",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+        });
     </script>
 </body>
 </html>
