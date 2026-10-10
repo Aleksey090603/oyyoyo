@@ -19,7 +19,7 @@
 
         .container {
             text-align: center;
-            padding: 30px;
+            padding: 40px 30px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
             border-radius: 32px;
@@ -30,21 +30,45 @@
         }
 
         .title {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: #fff;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .subtitle {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 24px;
+            margin-bottom: 32px;
             font-weight: 300;
         }
 
+        .btn {
+            padding: 18px 64px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 32px rgba(245, 87, 108, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 14px 40px rgba(245, 87, 108, 0.55);
+        }
+
+        .btn:active { transform: translateY(-1px) scale(0.99); }
+
+        /* Плеер (скрыт до нажатия) */
         .player-wrap {
+            display: none;
             position: relative;
             width: 100%;
             padding-top: 56.25%; /* 16:9 */
@@ -52,7 +76,10 @@
             overflow: hidden;
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
             background: #000;
+            margin-bottom: 8px;
         }
+
+        .player-wrap.active { display: block; }
 
         .player-wrap iframe {
             position: absolute;
@@ -67,12 +94,24 @@
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.65);
             line-height: 1.5;
+            display: none;
         }
 
+        .hint.active { display: block; }
+
         .qr-section {
-            margin-top: 24px;
-            padding-top: 20px;
+            margin-top: 36px;
+            padding-top: 28px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .qr-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.75);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
 
         #qrcode {
@@ -80,18 +119,20 @@
             justify-content: center;
             align-items: center;
             background: #fff;
-            padding: 14px;
-            border-radius: 18px;
+            padding: 18px;
+            border-radius: 20px;
             width: fit-content;
-            margin: 12px auto 0;
+            margin: 0 auto;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         #qrcode img, #qrcode canvas {
             display: block;
-            width: 180px !important;
-            height: 180px !important;
+            width: 200px !important;
+            height: 200px !important;
         }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -99,35 +140,55 @@
         <div class="title">Элементарно</div>
         <div class="subtitle">Мультфильм · Начало с 57:03</div>
 
-        <!-- Встроенный плеер VK -->
-        <div class="player-wrap">
+        <!-- Кнопка "Нажми" (видна до клика) -->
+        <div id="startBlock">
+            <button class="btn" onclick="startVideo()">Нажми</button>
+        </div>
+
+        <!-- Плеер (появляется после клика) -->
+        <div class="player-wrap" id="playerWrap">
             <iframe
                 id="vkPlayer"
-                src="https://vk.com/video_ext.php?oid=-220018529&id=456248228&t=3423s&autoplay=1&hd=2"
+                data-src="https://vk.com/video_ext.php?oid=-220018529&id=456248228&t=3423s&autoplay=1&hd=2"
                 allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
                 allowfullscreen>
             </iframe>
         </div>
 
-        <div class="hint">
+        <div class="hint" id="hint">
             Если видео не запустилось само — просто нажмите ▶ в плеере.
-            <br>Браузеры блокируют автозапуск со звуком из соображений безопасности.
         </div>
 
         <div class="qr-section">
-            <div style="font-size:0.85rem;color:rgba(255,255,255,0.75);letter-spacing:0.5px;text-transform:uppercase;">QR на этот сайт</div>
+            <div class="qr-label">Или отсканируйте QR-код</div>
             <div id="qrcode"></div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <script>
         const siteUrl = 'https://aleksey090603.github.io/oyyoyo/';
 
+        function startVideo() {
+            // Прячем кнопку
+            document.getElementById('startBlock').classList.add('hidden');
+
+            // Показываем плеер и подсказку
+            const playerWrap = document.getElementById('playerWrap');
+            playerWrap.classList.add('active');
+            document.getElementById('hint').classList.add('active');
+
+            // Подгружаем видео в iframe (запускается только сейчас)
+            const iframe = document.getElementById('vkPlayer');
+            iframe.src = iframe.dataset.src;
+        }
+
+        // QR-код ведёт на этот сайт
         new QRCode(document.getElementById("qrcode"), {
             text: siteUrl,
-            width: 180,
-            height: 180,
+            width: 200,
+            height: 200,
             colorDark: "#1a1a2e",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.M
