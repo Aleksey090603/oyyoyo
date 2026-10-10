@@ -104,10 +104,23 @@
     </div>
 
     <script>
-        function openVideo() {
-            const videoUrl = 'https://vkvideo.ru/video-220018529_456248228?t=3423s';
+       function openVideo() {
+    var videoUrl = 'https://vkvideo.ru/video-220018529_456248228?t=3423s';
+    
+    // Схема для приложения VK (работает в большинстве случаев)
+    var appScheme = 'vk://video-220018529_456248228';
+    
+    // Пробуем открыть приложение
+    var now = Date.now();
+    window.location.href = appScheme;
+    
+    // Если приложение не открылось за 1 секунду — открываем браузер
+    setTimeout(function() {
+        if (Date.now() - now < 1500) {
             window.open(videoUrl, '_blank');
         }
+    }, 1000);
+}
     </script>
 </body>
 </html>
